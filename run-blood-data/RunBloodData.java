@@ -1,3 +1,4 @@
+package runblooddata;
 import java.util.Scanner;
 
 // author @sollano_jhaynefe
@@ -24,6 +25,5 @@ public class RunBloodData {
 
         bd.display();
         jgs.close();
-
     }
 }
