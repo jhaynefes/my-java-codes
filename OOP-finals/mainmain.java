@@ -3,19 +3,28 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
+class InitialEmployeeData {
+    private static List<Employee> initialEmployees = new ArrayList<>();
+
+    static {
+        initialEmployees.add(new Employee("John Doe", "123-456-7890", "Manager", "Excellent"));
+        initialEmployees.add(new Employee("Jane Smith", "987-654-3210", "Developer", "Good"));
+    }
+
+    public static List<Employee> getInitialEmployees() {
+        return new ArrayList<>(initialEmployees);
+    }
+}
+
 public class EmployeeManagementSystem {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         EmployeeDatabase employeeDatabase = new EmployeeDatabase();
-        List<Employee> initialEmployees = new ArrayList<>();
-initialEmployees.add(new Employee("John Doe", "123-456-7890", "Manager", "Excellent"));
-initialEmployees.add(new Employee("Jane Smith", "987-654-3210", "Developer", "Good"));
-
-EmployeeDatabase employeeDatabasecurrent = new EmployeeDatabase(initialEmployees);
-                                                                                                                                                                                                                                                           
+        InitialEmployeeData i = new InitialEmployeeData();
         
-
+EmployeeDatabase employeeDatabasecurrent = new EmployeeDatabase(i);
+                                                                                   
         int choice;
 
         do {
@@ -100,8 +109,8 @@ EmployeeDatabase employeeDatabasecurrent = new EmployeeDatabase(initialEmployees
 class EmployeeDatabase {
     private List<Employee> employees;
 
-    public EmployeeDatabase(List<Employee> initialEmployees) {
-        this.employees = new ArrayList<>(initialEmployees);
+    public EmployeeDatabase(InitialEmployeeData i) {
+        this.employees = new ArrayList<>(i.getInitialEmployees());
     }
 
     public EmployeeDatabase() {
@@ -130,10 +139,6 @@ class EmployeeDatabase {
     }
 
     public void viewEmployeeDetails() {
-        if (employees.isEmpty()) {
-            System.out.println("No employees in the database.\n");
-            return;
-        }
 
         System.out.println("Employee Details:");
         for (Employee employee : employees) {
