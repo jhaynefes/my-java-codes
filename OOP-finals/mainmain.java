@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +15,19 @@ class InitialEmployeeData {
     }
 }
 
-public class EmployeeManagementSystem {
+class EmployeeManagementSystem {
+    private PayrollSystem payrollSystem;
+    private EmployeeDatabase employeeDatabase;
+
+    public EmployeeManagementSystem() {
+        this.payrollSystem = new PayrollSystem();
+        this.employeeDatabase = new EmployeeDatabase(new InitialEmployeeData());
+    }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        EmployeeDatabase employeeDatabase = new EmployeeDatabase();
-        InitialEmployeeData i = new InitialEmployeeData();
-        
-EmployeeDatabase employeeDatabasecurrent = new EmployeeDatabase(i);
-                                                                                   
+        EmployeeManagementSystem system = new EmployeeManagementSystem();
+
         int choice;
 
         do {
@@ -35,11 +38,13 @@ EmployeeDatabase employeeDatabasecurrent = new EmployeeDatabase(i);
 
             switch (choice) {
                 case 1:
-                    employeeDatabase.addEmployee();
+                    system.employeeDatabase.addEmployee();
                     break;
                 case 2:
-                    employeeDatabase.viewEmployeeDetails();
-                    employeeDatabasecurrent.viewEmployeeDetails();
+                    system.employeeDatabase.viewEmployeeDetails();
+                    break;
+                case 3:
+                    system.payrollSystem.calculatePayroll(system.employeeDatabase.getAllEmployees().toArray(new Employee[0]));
                     break;
                 case 0:
                     System.out.println("Exiting the Employee Management System. Goodbye!");
@@ -53,11 +58,16 @@ EmployeeDatabase employeeDatabasecurrent = new EmployeeDatabase(i);
     }
 }
 
- class Employee {
+class Employee {
     private String name;
     private String contactInformation;
     private String jobRole;
     private String performanceHistory;
+
+    // Constructors
+    public Employee() {
+        // Default constructor
+    }
 
     public Employee(String name, String contactInformation, String jobRole, String performanceHistory) {
         this.name = name;
@@ -134,7 +144,6 @@ class EmployeeDatabase {
     }
 
     public void viewEmployeeDetails() {
-
         System.out.println("Employee Details:");
         for (Employee employee : employees) {
             System.out.println("Name: " + employee.getName());
@@ -144,22 +153,56 @@ class EmployeeDatabase {
             System.out.println("------------------------");
         }
     }
-    
-  
 
     public List<Employee> getAllEmployees() {
-        return new ArrayList<>(employees);  
+        return new ArrayList<>(employees);
+    }
 }
 
 class PayrollSystem {
-    // Implement methods to calculate payroll, tax deductions, and benefits administration
+    private static final double TAX_RATE = 0.15;
+
+    public void calculatePayroll(Employee[] employees) {
+        if (employees.length == 0) {
+            System.out.println("No employees in the system.");
+            return;
+        }
+
+        System.out.println("Payroll Details:");
+        for (Employee employee : employees) {
+            double grossSalary = calculateGrossSalary(employee);
+            double taxAmount = calculateTax(grossSalary);
+            double netSalary = calculateNetSalary(grossSalary, taxAmount);
+
+            System.out.println("Name: " + employee.getName());
+            System.out.println("Gross Salary: $" + grossSalary);
+            System.out.println("Tax Deduction: $" + taxAmount);
+            System.out.println("Net Salary: $" + netSalary);
+            System.out.println("------------------------");
+        }
+    }
+
+    private double calculateGrossSalary(Employee employee) {
+        // Logic to calculate gross salary based on employee details
+        // Example: Assume a fixed salary without additional benefits
+        return 50000;  // Adjust as needed
+    }
+
+    private double calculateTax(double grossSalary) {
+        // Logic to calculate tax deduction based on gross salary and tax rate
+        return grossSalary * TAX_RATE;
+    }
+
+    private double calculateNetSalary(double grossSalary, double taxAmount) {
+        // Logic to calculate net salary after tax deduction
+        return grossSalary - taxAmount;
+    }
 }
 
 class AttendanceSystem {
-    // Implement methods to track employee attendance and working hours
+    // ... (unchanged)
 }
 
 class LeaveManagement {
-    // Implement methods to manage vacation requests, sick leave, and other time-off policies
-}
+    // ... (unchanged)
 }
