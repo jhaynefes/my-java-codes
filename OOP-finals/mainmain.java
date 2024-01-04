@@ -59,11 +59,6 @@ EmployeeDatabase employeeDatabasecurrent = new EmployeeDatabase(i);
     private String jobRole;
     private String performanceHistory;
 
-    // Constructors
-    public Employee() {
-        // Default constructor
-    }
-
     public Employee(String name, String contactInformation, String jobRole, String performanceHistory) {
         this.name = name;
         this.contactInformation = contactInformation;
